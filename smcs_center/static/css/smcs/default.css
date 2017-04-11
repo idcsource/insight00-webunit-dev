@@ -1,0 +1,21 @@
+html, body {
+	font-family:'SourceSansPro';
+}
+.redfont{
+	color: red;
+}
+#navi {
+	font-size:14px;
+	padding:10px;
+	border-style:solid;
+	border-width:0 0 1px 0;
+	border-bottom-color:#323737;
+}
+
+#nodetree_box{
+	margin:20px;
+	padding:20px;
+	border-style:dashed;
+	border-width:0 1px 1px 1px;
+	border-color:#ddd;
+}

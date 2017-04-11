@@ -9,7 +9,10 @@ package smcs_center
 
 import (
 	"fmt"
+	"text/template"
 
+	"github.com/idcsource/Insight-0-0-lib/pubfunc"
+	"github.com/idcsource/Insight-0-0-lib/smcs2"
 	"github.com/idcsource/Insight-0-0-lib/webs2"
 )
 
@@ -18,6 +21,7 @@ type StatusShow struct {
 }
 
 func (s *StatusShow) ExecHTTP() {
+	/* 判断是否登录开始 */
 	// 获取执行点名称
 	point_name, err := s.Rt.MyConfig.GetConfig("main.admin")
 	if err != nil {
@@ -30,4 +34,37 @@ func (s *StatusShow) ExecHTTP() {
 		fmt.Println(err)
 		return
 	}
+	/* 判断是否登录结束 */
+
+	// 获取所有节点的列表
+	ext_name, err := s.Rt.MyConfig.GetConfig("main.ext_name")
+	if err != nil {
+		fmt.Fprint(s.W, "Configure error.")
+		return
+	}
+	ext, err := s.B.GetExt(ext_name)
+	if err != nil {
+		fmt.Fprint(s.W, "Configure error.")
+		return
+	}
+	smcs_runtime := ext.(*smcs2.CenterSmcs)
+	nodetree, err := smcs_runtime.GetNodeTree()
+	if err != nil {
+		fmt.Fprint(s.W, "Configure error.")
+		return
+	}
+
+	// 模板文件
+	template_path, err := s.Rt.MyConfig.GetConfig("main.template_path")
+	if err != nil {
+		fmt.Fprint(s.W, "Configure error.")
+		return
+	}
+
+	templ, err := template.ParseFiles(pubfunc.AbsolutePath(template_path, s.B.GetStaticPath()) + "status_show.tmpl")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	templ.Execute(s.W, nodetree)
 }
