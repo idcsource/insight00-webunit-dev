@@ -1,0 +1,39 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<link href="/css/admin/reset.css" rel="stylesheet" type="text/css" />
+		<link href="/css/admin/index.css" rel="stylesheet" type="text/css" />
+		<script src="/js/admin/jquery-2.1.3.min.js"></script>
+		<script src="/js/admin/php.js"></script>
+		<script language="javascript">
+			$(document).ready(function(){
+				$("#login_button").click(function(){
+					var name = $("#login_name input").val();
+					var pass = $("#login_password input").val();
+					var d = new Date();
+					var ran = $.phpjs.sha1(d.getTime());
+					pass = $.phpjs.sha1(pass);
+					pass = ran + pass;
+					pass = $.phpjs.sha1(pass);
+					$.post( "/Admin/logindo",{username:name, password:pass, check: ran}).done(function(data){
+						if (data == "ok") {
+							window.location.href= "/Admin";
+						}else{
+							alert(data);
+						}
+					});
+				});
+			});
+		</script>
+		<title>{{.Title}}</title>
+	</head>
+	<body>
+		<div id="loginbox">
+			<div id="login_name"><label for="name">name: </label><input type="text" name="login_name_input"></div>
+			<div id="login_password"><label for="password">password: </label><input type="password" name="login_password_input"></div>
+			<div id="login_button"></div>
+		</div>
+	</body>
+</html>
+	
