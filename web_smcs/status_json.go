@@ -15,6 +15,7 @@ import (
 	"github.com/idcsource/Insight-0-0-lib/webs2"
 )
 
+// 返回节点树和状态，是从smcs2.NodeTree生成的json，url为status_json
 type StatusJson struct {
 	webs2.Floor
 }

@@ -15,6 +15,7 @@ import (
 	"github.com/idcsource/Insight-0-0-lib/webs2"
 )
 
+// 显示节点状态的页面，url为status_show
 type StatusShow struct {
 	webs2.Floor
 }

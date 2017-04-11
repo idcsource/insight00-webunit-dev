@@ -15,6 +15,7 @@ import (
 	"github.com/idcsource/Insight-0-0-lib/webs2"
 )
 
+// 管理界面首页，url为/
 type Index struct {
 	webs2.Floor
 }

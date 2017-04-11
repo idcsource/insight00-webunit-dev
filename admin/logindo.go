@@ -16,6 +16,7 @@ import (
 	"github.com/idcsource/Insight-0-0-lib/webs2"
 )
 
+// 登陆执行，url为logindo
 type Logindo struct {
 	webs2.Floor
 }

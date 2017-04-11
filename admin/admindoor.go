@@ -11,9 +11,11 @@ import (
 	"github.com/idcsource/Insight-0-0-lib/webs2"
 )
 
+// admin组件入口
 type AdminDoor struct {
 }
 
+// webs2的door接口实现
 func (d *AdminDoor) FloorList() (floors webs2.FloorDoor) {
 	floors = make(map[string]webs2.FloorInterface)
 	floors["/"] = &Index{}

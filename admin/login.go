@@ -15,6 +15,7 @@ import (
 	"github.com/idcsource/Insight-0-0-lib/webs2"
 )
 
+// 登陆界面，url为login
 type LoginFloor struct {
 	webs2.Floor
 }

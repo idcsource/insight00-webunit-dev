@@ -11,6 +11,7 @@ import (
 	"github.com/idcsource/Insight-0-0-lib/webs2"
 )
 
+// web_smcs组件的入口
 type Door struct {
 }
 
