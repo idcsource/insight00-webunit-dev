@@ -64,6 +64,7 @@ import (
 	"encoding/gob"
 	"time"
 
+	"github.com/idcsource/Insight-0-0-lib/cpool"
 	"github.com/idcsource/Insight-0-0-lib/roles"
 )
 
@@ -82,6 +83,7 @@ type AdminAthority struct {
 // Admin的运行时结构
 type AdminRuntime struct {
 	loginlist map[string]*loginadmin
+	config    *cpool.Block
 }
 
 // 登录列表

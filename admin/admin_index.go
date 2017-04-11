@@ -20,7 +20,14 @@ type Index struct {
 }
 
 func (i *Index) ExecHTTP() {
-	err := CheckLogin(i.W, i.R, i.B, i.Rt)
+	// 获取执行点名称
+	point_name, err := i.Rt.MyConfig.GetConfig("main.ext_name")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	// 执行执行点
+	err = i.B.ExecPoint(point_name, i.W, i.R, i.B, i.Rt)
 	if err != nil {
 		fmt.Println(err)
 		return
