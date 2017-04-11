@@ -14,8 +14,61 @@ html, body {
 
 #nodetree_box{
 	margin:20px;
-	padding:20px;
+}
+
+.one_nodetree{
+	height:100px;
+	width: 160px;
 	border-style:dashed;
-	border-width:0 1px 1px 1px;
+	border-width:1px;
 	border-color:#ddd;
+}
+
+.one_nodetree .nodetree_left{
+	float:left;
+	width:20px;
+	height:100px;
+}
+
+.one_nodetree .nodetree_left .upto{
+	width:20px;
+	height:20px;
+	line-height:20px;
+	text-align:center;
+	font-size: 16px;
+	font-weight:bold;
+}
+.one_nodetree .nodetree_left .status_red{
+	width:10px;
+	height:70px;
+	margin:5px;
+	background-color:green;
+}
+
+.one_nodetree .nodetree_right {
+	margin-top: 20px;
+	width:140px;
+	height:80px;
+	float:left;
+	position: relative;
+}
+.one_nodetree .nodetree_right .node_tree_name{
+	text-align:right;
+	padding-right:5px;
+}
+
+.one_nodetree .nodetree_right .control{
+	position: absolute;
+	right:5px;
+	bottom:5px;
+	text-align:right;
+}
+
+.one_nodetree .nodetree_right .control span{
+	color: #fff;
+	background-color:#323737;
+	padding:1px;
+	margin:3px;
+	display:block;
+	float:right;
 }

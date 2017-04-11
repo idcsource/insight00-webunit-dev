@@ -12,7 +12,6 @@ import (
 	"text/template"
 
 	"github.com/idcsource/Insight-0-0-lib/pubfunc"
-	"github.com/idcsource/Insight-0-0-lib/smcs2"
 	"github.com/idcsource/Insight-0-0-lib/webs2"
 )
 
@@ -35,24 +34,6 @@ func (s *StatusShow) ExecHTTP() {
 		return
 	}
 	/* 判断是否登录结束 */
-
-	// 获取所有节点的列表
-	ext_name, err := s.Rt.MyConfig.GetConfig("main.ext_name")
-	if err != nil {
-		fmt.Fprint(s.W, "Configure error.")
-		return
-	}
-	ext, err := s.B.GetExt(ext_name)
-	if err != nil {
-		fmt.Fprint(s.W, "Configure error.")
-		return
-	}
-	smcs_runtime := ext.(*smcs2.CenterSmcs)
-	nodetree, err := smcs_runtime.GetNodeTree()
-	if err != nil {
-		fmt.Fprint(s.W, "Configure error.")
-		return
-	}
 
 	// 模板文件
 	template_path, err := s.Rt.MyConfig.GetConfig("main.template_path")
