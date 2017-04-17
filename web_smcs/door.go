@@ -19,5 +19,6 @@ func (d *Door) FloorList() (floors webs2.FloorDoor) {
 	floors = make(map[string]webs2.FloorInterface)
 	floors["status_show"] = &StatusShow{}
 	floors["status_json"] = &StatusJson{}
+	floors["operator_node"] = &OperatorNode{}
 	return
 }
