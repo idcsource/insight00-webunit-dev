@@ -62,8 +62,8 @@ func (s *OperatorNode) addnode(w http.ResponseWriter, r *http.Request, b *webs2.
 		return
 	}
 
-	// 处理字段
-	fields := webs2.NewFormData(field_config, []string{"name", "disname", "nodetype", "groupid"}, s.R)
+	// 处理POST发送的字段
+	fields := webs2.NewFormData(field_config, s.R)
 	allfield, check, checks := fields.GetAll()
 	if check == false {
 		fmt.Fprint(s.W, checks)
