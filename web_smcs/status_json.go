@@ -35,7 +35,7 @@ func (s *StatusJson) ExecHTTP() {
 	smcs_runtime := ext.(*smcs2.CenterSmcs)
 	nodetree, err := smcs_runtime.GetNodeTree()
 	if err != nil {
-		fmt.Fprint(s.W, "Configure error.")
+		fmt.Fprint(s.W, "Configure error.", err)
 		return
 	}
 
