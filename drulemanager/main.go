@@ -5,23 +5,24 @@
 // Stephen Fire Meditation Qin [ 火志溟 ] -> firemeditation@gmail.com
 // Use of this source code is governed by GNU LGPL v3 license
 
-// Drule Manager
-//
-// 这是一个符合Insight 0+0 webs2规范的站点单元，但不包括js、css、template等静态文件
 package drulemanager
 
 import (
+	"fmt"
+	"text/template"
+
 	"github.com/idcsource/Insight-0-0-lib/webs2"
 )
 
-// drulemanager的入口
-type Door struct {
+type Main struct {
+	webs2.Floor
 }
 
-func (d *Door) FloorList() (floors webs2.FloorDoor) {
-	floors = make(map[string]webs2.FloorInterface)
-	floors["login"] = &Login{}
-	floors["logindo"] = &LoginDo{}
-	floors["main"] = &Main{}
-	return
+func (f *Main) ExecHTTP() {
+	templ, err := template.ParseFiles(f.B.GetStaticPath() + "template/main.tmpl")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	templ.Execute(f.W, nil)
 }
