@@ -9,39 +9,40 @@ package drulemanager
 
 import (
 	"fmt"
-	"net/http"
+	"text/template"
 
 	"github.com/idcsource/Insight-0-0-lib/drule2/drule"
 	"github.com/idcsource/Insight-0-0-lib/webs2"
 )
 
-type LoginDo struct {
+type Status struct {
 	webs2.Floor
 }
 
-func (f *LoginDo) ExecHTTP() {
+func (f *Status) ExecHTTP() {
 
 	drule_ext, _ := f.B.GetExt("DRule")
 	drun := drule_ext.(*drule.DRule)
 
-	f.R.ParseForm()
-	username := f.R.PostForm["username"][0]
-	password := f.R.PostForm["password"][0]
-
-	unid, _, errd := drun.UserLogin(username, password)
-	if errd.IsError() != nil {
-		fmt.Fprint(f.W, errd.String())
+	userinfo, err := getUserInfo(drun, f.W, f.R, f.B, f.Rt)
+	if err != nil {
 		return
 	}
 
-	// 写入cookie
-	cookie := &http.Cookie{
-		Name:  "DRuleCookie",
-		Value: unid + "|" + username,
-		Path:  "/", MaxAge: 0,
+	type pageData struct {
+		UserInfo   UserInfo
+		WorkStatus bool
 	}
-	http.SetCookie(f.W, cookie)
 
-	// 发送登录成功
-	fmt.Fprint(f.W, "ok")
+	page_data := pageData{
+		UserInfo: userinfo,
+	}
+	page_data.WorkStatus = drun.WorkStatus()
+
+	templ, err := template.ParseFiles(f.B.GetStaticPath() + "template/status.tmpl")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	templ.Execute(f.W, page_data)
 }

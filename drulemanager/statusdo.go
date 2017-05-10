@@ -9,39 +9,41 @@ package drulemanager
 
 import (
 	"fmt"
-	"net/http"
 
 	"github.com/idcsource/Insight-0-0-lib/drule2/drule"
+	"github.com/idcsource/Insight-0-0-lib/drule2/operator"
 	"github.com/idcsource/Insight-0-0-lib/webs2"
 )
 
-type LoginDo struct {
+type StatusDo struct {
 	webs2.Floor
 }
 
-func (f *LoginDo) ExecHTTP() {
+func (f *StatusDo) ExecHTTP() {
 
 	drule_ext, _ := f.B.GetExt("DRule")
 	drun := drule_ext.(*drule.DRule)
 
-	f.R.ParseForm()
-	username := f.R.PostForm["username"][0]
-	password := f.R.PostForm["password"][0]
-
-	unid, _, errd := drun.UserLogin(username, password)
-	if errd.IsError() != nil {
-		fmt.Fprint(f.W, errd.String())
+	userinfo, err := getUserInfo(drun, f.W, f.R, f.B, f.Rt)
+	if err != nil {
+		return
+	}
+	if userinfo.Authority != operator.USER_AUTHORITY_ROOT {
+		fmt.Fprint(f.W, "You have no authority to do this.")
 		return
 	}
 
-	// 写入cookie
-	cookie := &http.Cookie{
-		Name:  "DRuleCookie",
-		Value: unid + "|" + username,
-		Path:  "/", MaxAge: 0,
-	}
-	http.SetCookie(f.W, cookie)
+	workstatus := drun.WorkStatus()
 
-	// 发送登录成功
+	if workstatus == true {
+		drun.Pause()
+	} else {
+		err = drun.Start()
+		if err != nil {
+			fmt.Fprint(f.W, err)
+			return
+		}
+	}
 	fmt.Fprint(f.W, "ok")
+	return
 }

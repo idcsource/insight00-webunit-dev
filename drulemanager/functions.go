@@ -17,27 +17,35 @@ import (
 	"github.com/idcsource/Insight-0-0-lib/webs2"
 )
 
-func getUserInfo(drun *drule.DRule, w http.ResponseWriter, r *http.Request, b *webs2.Web, rt webs2.Runtime) (username, unid string, auth operator.UserAuthority, err error) {
-	user_cookie, err := r.Cookie("DruleCookie")
+type UserInfo struct {
+	UserName  string
+	Unid      string
+	Authority operator.UserAuthority
+}
+
+func getUserInfo(drun *drule.DRule, w http.ResponseWriter, r *http.Request, b *webs2.Web, rt webs2.Runtime) (userinfo UserInfo, err error) {
+	user_cookie, err := r.Cookie("DRuleCookie")
 	if err != nil {
 		fmt.Println(err)
-		http.Redirect(w, r, "/DruleManager/login", 303)
+		http.Redirect(w, r, "/DRuleManager/login", 303)
 		return
 	}
 	cookie_a := strings.Split(user_cookie.Value, "|")
 	if len(cookie_a) != 2 {
-		http.Redirect(w, r, "/DruleManager/login", 303)
+		http.Redirect(w, r, "/DRuleManager/login", 303)
 		err = fmt.Errorf("no login1.")
 		fmt.Println(err)
 		return
 	}
-	unid = cookie_a[0]
-	username = cookie_a[1]
+	userinfo = UserInfo{
+		UserName: cookie_a[1],
+		Unid:     cookie_a[0],
+	}
 
 	var login bool
-	auth, login = drun.GetUserAuthority(username, unid)
+	userinfo.Authority, login = drun.GetUserAuthority(userinfo.UserName, userinfo.Unid)
 	if login == false {
-		http.Redirect(w, r, "/DruleManager/login", 303)
+		http.Redirect(w, r, "/DRuleManager/login", 303)
 		err = fmt.Errorf("no login2.")
 		fmt.Println(err)
 		return

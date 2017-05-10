@@ -25,24 +25,26 @@ func (f *Main) ExecHTTP() {
 	drule_ext, _ := f.B.GetExt("DRule")
 	drun := drule_ext.(*drule.DRule)
 
-	username, _, auth, err := getUserInfo(drun, f.W, f.R, f.B, f.Rt)
+	userinfo, err := getUserInfo(drun, f.W, f.R, f.B, f.Rt)
 	if err != nil {
 		return
 	}
 
 	type pageData struct {
-		Username   string
+		UserInfo   UserInfo
 		Authority  string
 		WorkStatus bool
+		WorkMode   operator.DRuleOperateMode
 	}
 
 	page_data := pageData{
-		Username: username,
+		UserInfo: userinfo,
 	}
 	page_data.WorkStatus = drun.WorkStatus()
-	if auth == operator.USER_AUTHORITY_DRULE {
+	page_data.WorkMode = drun.WorkMode()
+	if userinfo.Authority == operator.USER_AUTHORITY_DRULE {
 		page_data.Authority = "DRule"
-	} else if auth == operator.USER_AUTHORITY_ROOT {
+	} else if userinfo.Authority == operator.USER_AUTHORITY_ROOT {
 		page_data.Authority = "Root"
 	} else {
 		page_data.Authority = "Normal"
