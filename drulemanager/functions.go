@@ -20,6 +20,7 @@ import (
 type UserInfo struct {
 	UserName  string
 	Unid      string
+	Email     string
 	Authority operator.UserAuthority
 }
 
@@ -41,7 +42,6 @@ func getUserInfo(drun *drule.DRule, w http.ResponseWriter, r *http.Request, b *w
 		UserName: cookie_a[1],
 		Unid:     cookie_a[0],
 	}
-
 	var login bool
 	userinfo.Authority, login = drun.GetUserAuthority(userinfo.UserName, userinfo.Unid)
 	if login == false {
@@ -50,5 +50,13 @@ func getUserInfo(drun *drule.DRule, w http.ResponseWriter, r *http.Request, b *w
 		fmt.Println(err)
 		return
 	}
+	useri, errd := drun.UserNow(userinfo.UserName)
+	if errd.IsError() != nil {
+		http.Redirect(w, r, "/DRuleManager/login", 303)
+		err = fmt.Errorf("no login2.")
+		fmt.Println(err)
+		return
+	}
+	userinfo.Email = useri.Email
 	return
 }
