@@ -12,6 +12,7 @@ import (
 
 	"github.com/idcsource/Insight-0-0-lib/drule2/drule"
 	"github.com/idcsource/Insight-0-0-lib/drule2/operator"
+	"github.com/idcsource/Insight-0-0-lib/iendecode"
 	"github.com/idcsource/Insight-0-0-lib/pubfunc"
 	"github.com/idcsource/Insight-0-0-lib/webs2"
 )
@@ -45,6 +46,10 @@ func (f *UsersDo) ExecHTTP() {
 		f.edituser(&selfinfo, drun)
 	case "userdelete":
 		f.userdelete(&selfinfo, drun)
+	case "arealist":
+		f.arealist(&selfinfo, drun)
+	case "areapower":
+		f.areapower(&selfinfo, drun)
 	default:
 		fmt.Fprint(f.W, "url wrong.")
 		return
@@ -276,6 +281,103 @@ func (f *UsersDo) userdelete(selfinfo *UserInfo, drun *drule.DRule) {
 		return
 	}
 	errd := drun.UserDelete(username)
+	if errd.IsError() != nil {
+		fmt.Fprint(f.W, errd.String())
+		return
+	}
+	fmt.Fprint(f.W, "ok")
+	return
+}
+
+func (f *UsersDo) arealist(selfinfo *UserInfo, drun *drule.DRule) {
+
+	var err error
+	defer func() {
+		if e := recover(); e != nil {
+			fmt.Fprint(f.W, e)
+			return
+		}
+	}()
+
+	// 获取输入
+	input := pubfunc.NewInputProcessor()
+	err = f.R.ParseForm()
+	if err != nil {
+		fmt.Fprint(f.W, err)
+		return
+	}
+	username := f.R.PostForm["username"][0]
+	var erri int
+	username, erri = input.Text(username, false, 2, 50)
+	if erri != 0 {
+		fmt.Fprint(f.W, "please check input.")
+		return
+	}
+	arealist, errd := drun.AreaList()
+	if errd.IsError() != nil {
+		fmt.Fprint(f.W, errd.String())
+		return
+	}
+	rw, errd := drun.AreaUserList(username)
+
+	type sendd struct {
+		Area []string
+		Rw   map[string]bool
+	}
+
+	send_one := sendd{
+		Area: arealist,
+		Rw:   rw,
+	}
+	send_j, err := iendecode.StructToJson(send_one)
+	if err != nil {
+		fmt.Fprint(f.W, err)
+		return
+	}
+	fmt.Fprint(f.W, send_j)
+	return
+}
+
+func (f *UsersDo) areapower(selfinfo *UserInfo, drun *drule.DRule) {
+
+	var err error
+	defer func() {
+		if e := recover(); e != nil {
+			fmt.Fprint(f.W, e)
+			return
+		}
+	}()
+
+	// 获取输入
+	input := pubfunc.NewInputProcessor()
+	err = f.R.ParseForm()
+	if err != nil {
+		fmt.Fprint(f.W, err)
+		return
+	}
+	username := f.R.PostForm["username"][0]
+	var erri int
+	username, erri = input.Text(username, false, 2, 50)
+	if erri != 0 {
+		fmt.Fprint(f.W, "please check input.")
+		return
+	}
+	areaname := f.R.PostForm["areaname"][0]
+	areaname, erri = input.Mark(areaname, false, 1, 50)
+	if erri != 0 {
+		fmt.Fprint(f.W, "please check input.")
+		return
+	}
+	dowhat := f.R.PostForm["dowhat"][0]
+
+	var errd operator.DRuleError
+	if dowhat == "r" {
+		errd = drun.AreaAddUser(username, areaname, true, false)
+	} else if dowhat == "w" {
+		errd = drun.AreaAddUser(username, areaname, true, true)
+	} else {
+		errd = drun.AreaAddUser(username, areaname, false, true)
+	}
 	if errd.IsError() != nil {
 		fmt.Fprint(f.W, errd.String())
 		return

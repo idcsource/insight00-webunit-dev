@@ -27,5 +27,7 @@ func (d *Door) FloorList() (floors webs2.FloorDoor) {
 	floors["statusdo"] = &StatusDo{}
 	floors["users"] = &Users{}
 	floors["usersdo"] = &UsersDo{}
+	floors["areas"] = &Areas{}
+	floors["areasdo"] = &AreasDo{}
 	return
 }
