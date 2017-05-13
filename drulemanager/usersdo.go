@@ -116,7 +116,7 @@ func (f *UsersDo) adduser(selfinfo *UserInfo, drun *drule.DRule) {
 	var err error
 
 	if selfinfo.Authority != operator.USER_AUTHORITY_ROOT {
-		fmt.Fprint(f.W, "no authority")
+		fmt.Fprint(f.W, "You have no authority to do this")
 		return
 	}
 
@@ -184,7 +184,7 @@ func (f *UsersDo) edituser(selfinfo *UserInfo, drun *drule.DRule) {
 	var err error
 
 	if selfinfo.Authority != operator.USER_AUTHORITY_ROOT {
-		fmt.Fprint(f.W, "no authority")
+		fmt.Fprint(f.W, "You have no authority to do this")
 		return
 	}
 
@@ -249,7 +249,7 @@ func (f *UsersDo) userdelete(selfinfo *UserInfo, drun *drule.DRule) {
 	var err error
 
 	if selfinfo.Authority != operator.USER_AUTHORITY_ROOT {
-		fmt.Fprint(f.W, "no authority")
+		fmt.Fprint(f.W, "You have no authority to do this")
 		return
 	}
 
@@ -290,6 +290,11 @@ func (f *UsersDo) userdelete(selfinfo *UserInfo, drun *drule.DRule) {
 }
 
 func (f *UsersDo) arealist(selfinfo *UserInfo, drun *drule.DRule) {
+
+	if selfinfo.Authority != operator.USER_AUTHORITY_ROOT {
+		fmt.Fprint(f.W, "You have no authority to do this")
+		return
+	}
 
 	var err error
 	defer func() {
@@ -339,6 +344,11 @@ func (f *UsersDo) arealist(selfinfo *UserInfo, drun *drule.DRule) {
 }
 
 func (f *UsersDo) areapower(selfinfo *UserInfo, drun *drule.DRule) {
+
+	if selfinfo.Authority != operator.USER_AUTHORITY_ROOT {
+		fmt.Fprint(f.W, "You have no authority to do this")
+		return
+	}
 
 	var err error
 	defer func() {

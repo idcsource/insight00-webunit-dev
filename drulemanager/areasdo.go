@@ -31,6 +31,11 @@ func (f *AreasDo) ExecHTTP() {
 		return
 	}
 
+	if selfinfo.Authority != operator.USER_AUTHORITY_ROOT {
+		fmt.Fprint(f.W, "You have no authority to do this")
+		return
+	}
+
 	operatetype, find := f.Rt.UrlRequest["type"]
 	if find == false {
 		fmt.Fprint(f.W, "url wrong.")
