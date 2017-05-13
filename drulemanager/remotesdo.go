@@ -29,6 +29,10 @@ func (f *RemotesDo) ExecHTTP() {
 		fmt.Fprint(f.W, "you must pause DRule first.")
 		return
 	}
+	if drun.WorkMode() != operator.DRULE_OPERATE_MODE_MASTER {
+		fmt.Fprint(f.W, "The working mode does not support this.")
+		return
+	}
 
 	selfinfo, err := getUserInfo(drun, f.W, f.R, f.B, f.Rt)
 	if err != nil {

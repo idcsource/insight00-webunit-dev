@@ -34,6 +34,7 @@ func (f *Remotes) ExecHTTP() {
 		UserInfo  UserInfo
 		IsRoot    bool
 		IsWorking bool
+		IsMaster  bool
 		List      []operator.O_DRuleOperator
 	}
 
@@ -45,8 +46,13 @@ func (f *Remotes) ExecHTTP() {
 		page_data.IsRoot = false
 	} else {
 		page_data.IsRoot = true
+		if drun.WorkMode() == operator.DRULE_OPERATE_MODE_MASTER {
+			page_data.IsMaster = true
+		} else {
+			page_data.IsMaster = false
+		}
 		page_data.IsWorking = drun.WorkStatus()
-		if page_data.IsWorking == false {
+		if page_data.IsWorking == false && page_data.IsMaster == true {
 			var errd operator.DRuleError
 			page_data.List, errd = drun.OperatorList()
 			if errd.IsError() != nil {
