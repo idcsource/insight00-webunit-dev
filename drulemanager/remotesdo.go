@@ -25,6 +25,11 @@ func (f *RemotesDo) ExecHTTP() {
 	drule_ext, _ := f.B.GetExt("DRule")
 	drun := drule_ext.(*drule.DRule)
 
+	if drun.WorkStatus() == true {
+		fmt.Fprint(f.W, "you must pause DRule first.")
+		return
+	}
+
 	selfinfo, err := getUserInfo(drun, f.W, f.R, f.B, f.Rt)
 	if err != nil {
 		fmt.Fprint(f.W, err)

@@ -22,6 +22,7 @@ func (d *Door) FloorList() (floors webs2.FloorDoor) {
 	floors = make(map[string]webs2.FloorInterface)
 	floors["login"] = &Login{}
 	floors["logindo"] = &LoginDo{}
+	floors["logout"] = &LogOut{}
 	floors["main"] = &Main{}
 	floors["status"] = &Status{}
 	floors["statusdo"] = &StatusDo{}
@@ -31,5 +32,6 @@ func (d *Door) FloorList() (floors webs2.FloorDoor) {
 	floors["areasdo"] = &AreasDo{}
 	floors["remotes"] = &Remotes{}
 	floors["remotesdo"] = &RemotesDo{}
+	floors["routers"] = &Routers{}
 	return
 }

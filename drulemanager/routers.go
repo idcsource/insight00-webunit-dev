@@ -16,11 +16,11 @@ import (
 	"github.com/idcsource/Insight-0-0-lib/webs2"
 )
 
-type Remotes struct {
+type Routers struct {
 	webs2.Floor
 }
 
-func (f *Remotes) ExecHTTP() {
+func (f *Routers) ExecHTTP() {
 
 	drule_ext, _ := f.B.GetExt("DRule")
 	drun := drule_ext.(*drule.DRule)
@@ -34,7 +34,7 @@ func (f *Remotes) ExecHTTP() {
 		UserInfo  UserInfo
 		IsRoot    bool
 		IsWorking bool
-		List      []operator.O_DRuleOperator
+		List      []operator.O_AreasRouter
 	}
 
 	page_data := pageData{
@@ -48,7 +48,7 @@ func (f *Remotes) ExecHTTP() {
 		page_data.IsWorking = drun.WorkStatus()
 		if page_data.IsWorking == false {
 			var errd operator.DRuleError
-			page_data.List, errd = drun.OperatorList()
+			page_data.List, errd = drun.AreaRouterList()
 			if errd.IsError() != nil {
 				fmt.Fprint(f.W, errd.String())
 				return
@@ -56,7 +56,7 @@ func (f *Remotes) ExecHTTP() {
 		}
 	}
 
-	templ, err := template.ParseFiles(f.B.GetStaticPath() + "template/remotes.tmpl")
+	templ, err := template.ParseFiles(f.B.GetStaticPath() + "template/routers.tmpl")
 	if err != nil {
 		fmt.Fprint(f.W, err)
 		return
