@@ -13,6 +13,7 @@ import (
 
 	"github.com/idcsource/Insight-0-0-lib/drule2/drule"
 	"github.com/idcsource/Insight-0-0-lib/drule2/operator"
+	"github.com/idcsource/Insight-0-0-lib/iendecode"
 	"github.com/idcsource/Insight-0-0-lib/webs2"
 )
 
@@ -54,6 +55,8 @@ func (f *RemotesDo) ExecHTTP() {
 		f.addremote(&selfinfo, drun)
 	case "delete":
 		f.deleteremote(&selfinfo, drun)
+	case "list":
+		f.listremotes(&selfinfo, drun)
 	default:
 		fmt.Fprint(f.W, "url wrong.")
 		return
@@ -137,5 +140,26 @@ func (f *RemotesDo) addremote(selfinfo *UserInfo, drun *drule.DRule) {
 	}
 
 	fmt.Fprint(f.W, "ok")
+	return
+}
+
+func (f *RemotesDo) listremotes(selfinfo *UserInfo, drun *drule.DRule) {
+
+	if selfinfo.Authority != operator.USER_AUTHORITY_ROOT {
+		fmt.Fprint(f.W, "no authority")
+		return
+	}
+
+	list, errd := drun.OperatorList()
+	if errd.IsError() != nil {
+		fmt.Fprint(f.W, errd.String())
+		return
+	}
+	list_j, err := iendecode.StructToJson(list)
+	if err != nil {
+		fmt.Fprint(f.W, err)
+		return
+	}
+	fmt.Fprint(f.W, list_j)
 	return
 }

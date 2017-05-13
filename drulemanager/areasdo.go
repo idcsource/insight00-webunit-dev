@@ -12,6 +12,7 @@ import (
 
 	"github.com/idcsource/Insight-0-0-lib/drule2/drule"
 	"github.com/idcsource/Insight-0-0-lib/drule2/operator"
+	"github.com/idcsource/Insight-0-0-lib/iendecode"
 	"github.com/idcsource/Insight-0-0-lib/pubfunc"
 	"github.com/idcsource/Insight-0-0-lib/webs2"
 )
@@ -48,6 +49,8 @@ func (f *AreasDo) ExecHTTP() {
 		f.delarea(&selfinfo, drun)
 	case "rename":
 		f.rename(&selfinfo, drun)
+	case "list":
+		f.listareas(&selfinfo, drun)
 	default:
 		fmt.Fprint(f.W, "url wrong.")
 		return
@@ -178,5 +181,26 @@ func (f *AreasDo) rename(selfinfo *UserInfo, drun *drule.DRule) {
 		return
 	}
 	fmt.Fprint(f.W, "ok")
+	return
+}
+
+func (f *AreasDo) listareas(selfinfo *UserInfo, drun *drule.DRule) {
+
+	if selfinfo.Authority != operator.USER_AUTHORITY_ROOT {
+		fmt.Fprint(f.W, "no authority")
+		return
+	}
+
+	list, errd := drun.AreaList()
+	if errd.IsError() != nil {
+		fmt.Fprint(f.W, errd.String())
+		return
+	}
+	list_j, err := iendecode.StructToJson(list)
+	if err != nil {
+		fmt.Fprint(f.W, err)
+		return
+	}
+	fmt.Fprint(f.W, list_j)
 	return
 }
