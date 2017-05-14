@@ -9,10 +9,12 @@ package drulemanager
 
 import (
 	"fmt"
+	"strings"
 	"text/template"
 
 	"github.com/idcsource/Insight-0-0-lib/drule2/drule"
 	"github.com/idcsource/Insight-0-0-lib/drule2/operator"
+	"github.com/idcsource/Insight-0-0-lib/iendecode"
 	"github.com/idcsource/Insight-0-0-lib/webs2"
 )
 
@@ -30,16 +32,21 @@ func (f *Routers) ExecHTTP() {
 		return
 	}
 
+	type RouterSet struct {
+		Set  operator.O_AreasRouter
+		Json string
+	}
 	type pageData struct {
 		UserInfo  UserInfo
 		IsRoot    bool
 		IsWorking bool
 		IsMaster  bool
-		List      []operator.O_AreasRouter
+		List      []RouterSet
 	}
 
 	page_data := pageData{
 		UserInfo: userinfo,
+		List:     make([]RouterSet, 0),
 	}
 
 	if userinfo.Authority != operator.USER_AUTHORITY_ROOT {
@@ -52,12 +59,24 @@ func (f *Routers) ExecHTTP() {
 			page_data.IsMaster = false
 		}
 		page_data.IsWorking = drun.WorkStatus()
-		if page_data.IsWorking == false && page_data.IsMaster == true {
+		if page_data.IsMaster == true {
 			var errd operator.DRuleError
-			page_data.List, errd = drun.AreaRouterList()
+			list, errd := drun.AreaRouterList()
 			if errd.IsError() != nil {
 				fmt.Fprint(f.W, errd.String())
 				return
+			}
+			for i, _ := range list {
+				rs := RouterSet{
+					Set: list[i],
+				}
+				rs.Json, err = iendecode.StructToJson(list[i])
+				if err != nil {
+					fmt.Fprint(f.W, err)
+					return
+				}
+				rs.Json = strings.TrimSpace(rs.Json)
+				page_data.List = append(page_data.List, rs)
 			}
 		}
 	}

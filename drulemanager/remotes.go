@@ -52,7 +52,7 @@ func (f *Remotes) ExecHTTP() {
 			page_data.IsMaster = false
 		}
 		page_data.IsWorking = drun.WorkStatus()
-		if page_data.IsWorking == false && page_data.IsMaster == true {
+		if page_data.IsMaster == true {
 			var errd operator.DRuleError
 			page_data.List, errd = drun.OperatorList()
 			if errd.IsError() != nil {

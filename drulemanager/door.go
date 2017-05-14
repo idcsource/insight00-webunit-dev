@@ -33,5 +33,6 @@ func (d *Door) FloorList() (floors webs2.FloorDoor) {
 	floors["remotes"] = &Remotes{}
 	floors["remotesdo"] = &RemotesDo{}
 	floors["routers"] = &Routers{}
+	floors["routersdo"] = &RoutersDo{}
 	return
 }
