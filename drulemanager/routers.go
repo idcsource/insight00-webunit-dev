@@ -37,16 +37,23 @@ func (f *Routers) ExecHTTP() {
 		Json string
 	}
 	type pageData struct {
-		UserInfo  UserInfo
-		IsRoot    bool
-		IsWorking bool
-		IsMaster  bool
-		List      []RouterSet
+		ServerName string
+		UserInfo   UserInfo
+		IsRoot     bool
+		IsWorking  bool
+		IsMaster   bool
+		List       []RouterSet
 	}
 
 	page_data := pageData{
 		UserInfo: userinfo,
 		List:     make([]RouterSet, 0),
+	}
+
+	page_data.ServerName, err = f.Rt.MyConfig.GetConfig("main.name")
+	if err != nil {
+		fmt.Println(err)
+		return
 	}
 
 	if userinfo.Authority != operator.USER_AUTHORITY_ROOT {

@@ -19,10 +19,24 @@ type Login struct {
 }
 
 func (f *Login) ExecHTTP() {
-	templ, err := template.ParseFiles(f.B.GetStaticPath() + "template/login.tmpl")
+	var err error
+
+	type pageData struct {
+		ServerName string
+	}
+
+	pagedata := pageData{}
+
+	pagedata.ServerName, err = f.Rt.MyConfig.GetConfig("main.name")
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-	templ.Execute(f.W, nil)
+
+	templ, err := template.ParseFiles(f.B.GetStaticPath() + "template/login.tmpl")
+	if err != nil {
+		fmt.Fprint(f.W, err)
+		return
+	}
+	templ.Execute(f.W, pagedata)
 }

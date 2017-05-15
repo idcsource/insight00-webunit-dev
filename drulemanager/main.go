@@ -31,6 +31,7 @@ func (f *Main) ExecHTTP() {
 	}
 
 	type pageData struct {
+		ServerName string
 		UserInfo   UserInfo
 		Authority  string
 		WorkStatus bool
@@ -40,6 +41,13 @@ func (f *Main) ExecHTTP() {
 	page_data := pageData{
 		UserInfo: userinfo,
 	}
+
+	page_data.ServerName, err = f.Rt.MyConfig.GetConfig("main.name")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
 	page_data.WorkStatus = drun.WorkStatus()
 	page_data.WorkMode = drun.WorkMode()
 	if userinfo.Authority == operator.USER_AUTHORITY_DRULE {

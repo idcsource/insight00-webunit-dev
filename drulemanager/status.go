@@ -32,12 +32,18 @@ func (f *Status) ExecHTTP() {
 	type pageData struct {
 		UserInfo   UserInfo
 		WorkStatus bool
+		ServerName string
 	}
 
 	page_data := pageData{
 		UserInfo: userinfo,
 	}
 	page_data.WorkStatus = drun.WorkStatus()
+	page_data.ServerName, err = f.Rt.MyConfig.GetConfig("main.name")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 
 	templ, err := template.ParseFiles(f.B.GetStaticPath() + "template/status.tmpl")
 	if err != nil {

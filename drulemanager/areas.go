@@ -30,13 +30,20 @@ func (f *Areas) ExecHTTP() {
 	}
 
 	type pageData struct {
-		UserInfo UserInfo
-		IsRoot   bool
-		AreaList []string
+		ServerName string
+		UserInfo   UserInfo
+		IsRoot     bool
+		AreaList   []string
 	}
 
 	page_data := pageData{
 		UserInfo: userinfo,
+	}
+
+	page_data.ServerName, err = f.Rt.MyConfig.GetConfig("main.name")
+	if err != nil {
+		fmt.Println(err)
+		return
 	}
 
 	if userinfo.Authority != operator.USER_AUTHORITY_ROOT {

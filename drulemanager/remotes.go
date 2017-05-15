@@ -31,15 +31,22 @@ func (f *Remotes) ExecHTTP() {
 	}
 
 	type pageData struct {
-		UserInfo  UserInfo
-		IsRoot    bool
-		IsWorking bool
-		IsMaster  bool
-		List      []operator.O_DRuleOperator
+		ServerName string
+		UserInfo   UserInfo
+		IsRoot     bool
+		IsWorking  bool
+		IsMaster   bool
+		List       []operator.O_DRuleOperator
 	}
 
 	page_data := pageData{
 		UserInfo: userinfo,
+	}
+
+	page_data.ServerName, err = f.Rt.MyConfig.GetConfig("main.name")
+	if err != nil {
+		fmt.Println(err)
+		return
 	}
 
 	if userinfo.Authority != operator.USER_AUTHORITY_ROOT {
