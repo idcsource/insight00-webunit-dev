@@ -22,6 +22,7 @@ type OperatorNode struct {
 
 type operatorNode_NodeSimpleInfo struct {
 	Name    string
+	Code    string
 	Disname string
 	Group   string
 	Type    int64
@@ -74,6 +75,7 @@ func (s *OperatorNode) addnode(w http.ResponseWriter, r *http.Request, b *webs2.
 	data := operatorNode_NodeSimpleInfo{
 		Name:    allfield["name"].String,
 		Disname: allfield["disname"].String,
+		Code:    allfield["code"].String,
 		Group:   allfield["groupid"].String,
 		Type:    allfield["nodetype"].Int,
 	}
@@ -92,7 +94,7 @@ func (s *OperatorNode) addnode(w http.ResponseWriter, r *http.Request, b *webs2.
 	smcs_runtime := ext.(*smcs2.CenterSmcs)
 
 	// 执行添加
-	err = smcs_runtime.AddNode(data.Name, data.Disname, uint8(data.Type), data.Group)
+	err = smcs_runtime.AddNode(data.Name, data.Disname, data.Code, uint8(data.Type), data.Group)
 	if err != nil {
 		fmt.Fprint(s.W, err)
 		return
