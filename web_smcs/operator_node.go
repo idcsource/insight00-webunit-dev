@@ -83,6 +83,7 @@ func (s *OperatorNode) addnode(w http.ResponseWriter, r *http.Request, b *webs2.
 		Group:   allfield["groupid"].String,
 		Type:    allfield["nodetype"].Int,
 	}
+	fmt.Println(allfield)
 
 	// 获取SMCS的扩展
 	ext_name, err := s.Rt.MyConfig.GetConfig("main.ext_name")

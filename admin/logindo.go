@@ -24,7 +24,7 @@ type Logindo struct {
 func (i *Logindo) ExecHTTP() {
 	var err error
 	// 获取到trule
-	trule, err := i.B.GetTRule()
+	trule, err := i.B.GetTRule2()
 	if err != nil {
 		fmt.Fprint(i.W, "Role Store Wrong!")
 		return
@@ -55,6 +55,12 @@ func (i *Logindo) ExecHTTP() {
 		fmt.Fprint(i.W, "Configure error.")
 		return
 	}
+	// 获取保存的area
+	areaname, err := i.Rt.MyConfig.GetConfig("main.areaname")
+	if err != nil {
+		fmt.Fprint(i.W, "Configure error.")
+		return
+	}
 
 	// 获取运行时
 	adminruntime_ext, err := i.B.GetExt(runtime_name)
@@ -71,7 +77,7 @@ func (i *Logindo) ExecHTTP() {
 
 	// 获取保存的密码
 	var self_password string
-	err = trule.ReadData(admin_prefix+username, "Password", &self_password)
+	err = trule.ReadData(areaname, admin_prefix+username, "Password", &self_password)
 	if err != nil {
 		fmt.Fprint(i.W, "Username or Password wrong.")
 		return
