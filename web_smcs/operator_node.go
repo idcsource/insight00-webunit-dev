@@ -66,10 +66,14 @@ func (s *OperatorNode) addnode(w http.ResponseWriter, r *http.Request, b *webs2.
 	}
 
 	// 处理POST发送的字段
-	fields := webs2.NewFormData(field_config, s.R)
-	allfield, check, checks := fields.GetAll(nil)
-	if check == false {
-		fmt.Fprint(s.W, checks)
+	fields, err := webs2.NewFormData(field_config, UnitFields, s.R)
+	if err != nil {
+		fmt.Fprint(s.W, err)
+		return
+	}
+	allfield, check := fields.Fields(map[string]bool{"name": false, "disname": false, "code": false, "groupid": false, "nodetype": false})
+	if check != webs2.CHECK_STATUS_OK {
+		fmt.Fprint(s.W, "Please check input")
 		return
 	}
 	data := operatorNode_NodeSimpleInfo{
@@ -111,14 +115,19 @@ func (s *OperatorNode) delnode(w http.ResponseWriter, r *http.Request, b *webs2.
 	}
 
 	// 处理POST发送的字段
-	fields := webs2.NewFormData(field_config, s.R)
-	allfield, check, checks := fields.GetAll([]string{"name"})
-	if check == false {
-		fmt.Fprint(s.W, checks)
+	fields, err := webs2.NewFormData(field_config, UnitFields, s.R)
+	if err != nil {
+		fmt.Fprint(s.W, err)
 		return
 	}
+	namefield, check := fields.Get("name", false)
+	if check != webs2.CHECK_STATUS_OK {
+		fmt.Fprint(s.W, "Please check input")
+		return
+	}
+
 	data := operatorNode_NodeSimpleInfo{
-		Name: allfield["name"].String,
+		Name: namefield.String,
 	}
 	// 获取SMCS的扩展
 	ext_name, err := s.Rt.MyConfig.GetConfig("main.ext_name")
