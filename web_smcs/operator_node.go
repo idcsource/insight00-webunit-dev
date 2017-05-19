@@ -66,7 +66,7 @@ func (s *OperatorNode) addnode(w http.ResponseWriter, r *http.Request, b *webs2.
 	}
 
 	// 处理POST发送的字段
-	fields, err := webs2.NewFormData(field_config, UnitFields, s.R)
+	fields, err := webs2.NewFormData(field_config, UnitFields, s.R, 0)
 	if err != nil {
 		fmt.Fprint(s.W, err)
 		return
@@ -116,7 +116,7 @@ func (s *OperatorNode) delnode(w http.ResponseWriter, r *http.Request, b *webs2.
 	}
 
 	// 处理POST发送的字段
-	fields, err := webs2.NewFormData(field_config, UnitFields, s.R)
+	fields, err := webs2.NewFormData(field_config, UnitFields, s.R, 0)
 	if err != nil {
 		fmt.Fprint(s.W, err)
 		return
