@@ -12,8 +12,8 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/idcsource/Insight-0-0-lib/random"
-	"github.com/idcsource/Insight-0-0-lib/webs2"
+	"github.com/idcsource/insight00-lib/random"
+	"github.com/idcsource/insight00-lib/webs2"
 )
 
 // 登陆执行，url为logindo

@@ -11,7 +11,7 @@
 package drulemanager
 
 import (
-	"github.com/idcsource/Insight-0-0-lib/webs2"
+	"github.com/idcsource/insight00-lib/webs2"
 )
 
 // drulemanager的入口

@@ -10,9 +10,9 @@ package web_smcs
 import (
 	"fmt"
 
-	"github.com/idcsource/Insight-0-0-lib/nst"
-	"github.com/idcsource/Insight-0-0-lib/smcs2"
-	"github.com/idcsource/Insight-0-0-lib/webs2"
+	"github.com/idcsource/insight00-lib/nst"
+	"github.com/idcsource/insight00-lib/smcs2"
+	"github.com/idcsource/insight00-lib/webs2"
 )
 
 // 返回节点树和状态，是从smcs2.NodeTree生成的json，url为status_json

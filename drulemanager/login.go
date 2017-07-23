@@ -11,7 +11,7 @@ import (
 	"fmt"
 	"text/template"
 
-	"github.com/idcsource/Insight-0-0-lib/webs2"
+	"github.com/idcsource/insight00-lib/webs2"
 )
 
 type Login struct {

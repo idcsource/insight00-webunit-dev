@@ -12,8 +12,8 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/idcsource/Insight-0-0-lib/cpool"
-	"github.com/idcsource/Insight-0-0-lib/webs2"
+	"github.com/idcsource/insight00-lib/cpool"
+	"github.com/idcsource/insight00-lib/webs2"
 )
 
 // 运行时生成，用这个注册web的扩展

@@ -8,7 +8,7 @@
 package web_smcs
 
 import (
-	"github.com/idcsource/Insight-0-0-lib/webs2"
+	"github.com/idcsource/insight00-lib/webs2"
 )
 
 var UnitFields webs2.StaticFields

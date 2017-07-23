@@ -11,8 +11,8 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/idcsource/Insight-0-0-lib/smcs2"
-	"github.com/idcsource/Insight-0-0-lib/webs2"
+	"github.com/idcsource/insight00-lib/smcs2"
+	"github.com/idcsource/insight00-lib/webs2"
 )
 
 // 对节点的添加删除等操作

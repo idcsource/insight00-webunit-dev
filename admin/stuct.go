@@ -9,7 +9,7 @@
 //
 // 本组件提供基本的管理员后台功能。
 //
-// 本组件使用Insight-0-0-lib中的*drule.TRule作为信息的存储。
+// 本组件使用insight00-lib中的*drule.TRule作为信息的存储。
 //
 // 本组件并没有设计成单独使用，需要配合其他Web Unit组件，并为Insight 0+0的节点监控中心功能进行了定制。
 //
@@ -64,8 +64,8 @@ import (
 	"encoding/gob"
 	"time"
 
-	"github.com/idcsource/Insight-0-0-lib/cpool"
-	"github.com/idcsource/Insight-0-0-lib/roles"
+	"github.com/idcsource/insight00-lib/cpool"
+	"github.com/idcsource/insight00-lib/roles"
 )
 
 // Admin用户
